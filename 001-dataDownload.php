@@ -1,11 +1,17 @@
 <?php
 /***  cmd  ****
-php 001-dataDownload.php SRR304976
+php 001-dataDownload.php SRR304976 /home/c00cjz00/ncbi/tmp
 ****  end  ***/
+$dirBin=dirname(__FILE__);
+include($dirBin."/config.php");
+
 if (!isset($argv[1])){
  echo "請輸入SRR/SRP/SRX ID\n"; exit();
+}elseif (!isset($argv[2])){
+ echo "請輸入儲存檔目錄\n"; exit();
 }else{
  $ID=trim($argv[1]);
+ $saveFolder=trim($argv[2]); if (!is_dir($saveFolder)) passthru("mkdir -p ".$saveFolder); 
  $ID_header=substr($ID,0,3);
  $ID_folder=substr($ID,0,6);
  if(($ID_header=="SRR") || ($ID_header=="ERR")  || ($ID_header=="DRR")){
@@ -18,9 +24,6 @@ if (!isset($argv[1])){
   echo "請輸入SRR/SRP/SRX ID\n"; exit();
  }
 }
-$dirBin=dirname(__FILE__);
-include($dirBin."/config.php");
-$saveFolder="/home/c00cjz00/ncbi/tmp";
 $sraFile=$saveFolder."/".$ID.".sra";
 if (is_file($sraFile)){
   echo "檔案已經存在\n"; exit();
