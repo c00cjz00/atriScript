@@ -1,21 +1,6 @@
 <?php
 /***  cmd  ****
-php 003-trim.php $ID $saveFolder $trailing $minlen
-java -jar $trimmomaticBin \
-	PE \
-	-phred33 \
-	-threads 20 \
-    $saveFolder/$sampleName_1.fastq \
-    $saveFolder/$sampleName_2.fastq \	
-    $saveFolder/$sampleName_1.trim_paired.fq \
-    $saveFolder/$sampleName_1.trim_unpaired.fq \
-    $saveFolder/$sampleName_2.trim_paired.fq \
-    $saveFolder/$sampleName_2.trim_unpaired.fq \
-    TRAILING:$trailing 
-    MINLEN:$minlen
-
-
-
+php 003-trim.php $ID $outputfolder $trailing $minlen
 ****  end  ***/
 $dirBin=dirname(__FILE__);
 include($dirBin."/config.php");
@@ -30,21 +15,18 @@ if (!isset($argv[1])){
  echo "minlen\n"; exit(); 
 }else{ 
  $ID=trim($argv[1]);
- $fastqFile=substr($sraFile,0,-4).".fastq";
- $saveFolder=trim($argv[2]); if (!is_dir($saveFolder)) passthru("mkdir -p ".$saveFolder);  
- if (is_file($fastqFile)){
-  echo "檔案轉換完成: ".$fastqFile."\n"; exit();
- }elseif (!is_file($sraFile)){
-  echo "請輸入sra檔案\n"; exit();
- }else{
-  $cmd=$sraToolkitDir."/bin/fastq-dump --split-3 -O ".$saveFolder." ".$sraFile;
-  echo $cmd."\n";
-  passthru($cmd); sleep(1);
-  if (is_file($fastqFile)){
-   echo "檔案轉換完成: ".$fastqFile."\n"; exit();
-  }else{
-   echo "檔案轉換失敗\n"; exit();  
-  }
- }
+ $outputfolder=trim($argv[2]); if (!is_dir($outputfolder)) passthru("mkdir -p ".$outputfolder);  
+ $trailing=trim($argv[3]);  $minlen=trim($argv[4]);
+ $fastqFile1=$outputfolder."/".$ID."_1.fastq"; $fastqFile2=$outputfolder."/".$ID."_2.fastq";
+ $trim_paired_1=$outputfolder."/".$ID."_1.trim_paired.fq"; $trim_unpaired_1=$outputfolder."/".$ID."_1.trim_unpaired.fq";
+ $trim_paired_2=$outputfolder."/".$ID."_2.trim_paired.fq"; $trim_unpaired_2=$outputfolder."/".$ID."_2.trim_unpaired.fq";
+
+ $inputFileArr=array($fastqFile1,$fastqFile1); $outputFileArr=array($trim_paired_1,$trim_unpaired_1,$trim_paired_2,$trim_unpaired_2); $finalOutputFileArr=$outputFileArr;
+ $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);  
+ if ($error==0){
+   $cmd="java -jar ".$trimmomaticBin." PE -phred33 -threads 20 ".$outputfolder."/".$ID."_1.fastq ".$outputfolder."/".$ID."_2.fastq ".$outputfolder."/".$ID."_1.trim_paired.fq ".$outputfolder."/".$ID."_1.trim_unpaired.fq ".$outputfolder."/".$ID."_2.trim_paired.fq ".$outputfolder."/".$ID."_2.trim_unpaired.fq TRAILING:".$trailing." MINLEN:".$minlen;
+  echo "執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+  $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
+ } 
 } 
 ?>
