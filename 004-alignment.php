@@ -25,29 +25,13 @@ if (!isset($argv[1])){
   echo "執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
   $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
  } 
- 
- /*
- if (is_file($samFile)){
-  echo "Sam: ".$samFile." 完成\n"; 	
-  exit(); 
- }elseif (!is_file($pariFile1) || !is_file($pariFile2)){
-  echo "pair File: ".$pariFile1." 不存在\n"; 	
-  echo "pair File: ".$pariFile2." 不存在\n"; 	
-  exit(); 
- }else{
-  if (!is_file($indexFile1) || !is_file($indexFile2)){
-   $cmd=$smaltBin." index ".$index." ".$referenceFile;
-   echo $cmd."\n"; passthru($cmd); sleep(1);		
-  }
-  if (is_file($indexFile1) && is_file($indexFile2)){
-   $cmd=$smaltBin." map -n 20 -f samsoft -o ".$samFile." ".$index." ".$pariFile1." ".$pariFile2;
-   echo $cmd."\n"; passthru($cmd); sleep(1);		
-   if (is_file($samFile)){
-    echo "Sam: ".$samFile." 完成\n"; 	  
-   }else{
-    echo "Sam: ".$samFile." 失敗\n"; 		   
-   }
-  }
- }*/
+
+ $inputFileArr=array($pariFile1,$pariFile2,$indexFile1,$indexFile2); $outputFileArr=array($samFile); $finalOutputFileArr=$outputFileArr;
+ $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);   
+ if ($error==0){
+  $cmd=$smaltBin." map -n 20 -f samsoft -o ".$samFile." ".$index." ".$pariFile1." ".$pariFile2;
+  echo "執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+  $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
+ } 
 } 
 ?>

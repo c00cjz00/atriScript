@@ -2,6 +2,11 @@
 $ascpDir="/pkg/biology/Aspera/Aspera_v3.7.7/cli";
 $sraToolkitDir="/pkg/biology/SRA_Toolkit/SRAToolkit_v2.9.0";
 $trimmomaticBin="/pkg/biology/Trimmomatic/Trimmomatic_v0.36/trimmomatic-0.36.jar";
+$smaltBin="/pkg/biology/SMALT/SMALT_v0.7.6/bin/smalt";
+$samtoolsBin="/pkg/biology/SAMtools/SAMtools_v1.9/bin/samtools";
+$tabixBin="/pkg/biology/SAMtools/build/samtools-1.2/htslib-1.2/tabix";
+$bcftoolsBin="/pkg/biology/BCFtools/BCFtools_v1.8/bin/bcftools";
+$vcfutilsBin="/pkg/biology/BCFtools/BCFtools_v1.8/bin/vcfutils.pl";
 
 
 function processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr){
