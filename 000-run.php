@@ -37,8 +37,13 @@ if (!isset($argv[1])){
   $cmd="ssh ".$ip4SSH." ".$phpBin." ".$dirBin."/001-dataDownload.php $ID $outputfolder";   
   echo "2.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
   $cmd=$phpBin." ".$dirBin."/002-dumpSRA.php $sraFile $outputfolder";
-  echo "3.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
-  $cmd=$phpBin." ".$dirBin."/003-trim.php $ID $outputfolder $trailing $minlen";
+  echo "3.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1); 
+  if (isset(trim($argv[8])) && is_file(trim($argv[8])) && isset(trim($argv[9])) && is_file(trim($argv[9]))){  
+   $fastqFile1=trim($argv[8]); $fastqFile2=trim($argv[9]);
+   $cmd=$phpBin." ".$dirBin."/003-trimFromFile.php $ID $outputfolder $trailing $minlen $fastqFile1 $fastqFile2";
+  }else{  
+   $cmd=$phpBin." ".$dirBin."/003-trim.php $ID $outputfolder $trailing $minlen";
+  }
   echo "4.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
   $cmd=$phpBin." ".$dirBin."/004-alignment.php $ID $outputfolder $referenceFile";
   echo "5.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
