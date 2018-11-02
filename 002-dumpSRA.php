@@ -1,11 +1,11 @@
 <?php
 /***  cmd  ****
-php 002-dumpSRA.php $ID $outputfolder
+php 002-dumpSRA.php $sraFile $outputfolder
 
 ****  end  ***/
 $dirBin=dirname(__FILE__);
 include($dirBin."/config.php");
-
+chdir($dirBin);
 if (!isset($argv[1])){
  echo "請輸入sra檔案\n"; exit();
 }elseif (!isset($argv[2])){

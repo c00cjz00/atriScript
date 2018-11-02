@@ -1,49 +1,10 @@
 <?php
 /***  cmd  ****
 php 005-variant_calling.php $ID $outputfolder $referenceFile $mpileup_minMapQ $mpileup_minBaseQ
-sample=$1
-inputfolder=$2
-outputfolder=$3
-reference_fa=$4
-mpileup_minMapQ=$5
-mpileup_minBaseQ=$6
-jobid=$7
-
-BASEDIR=$(dirname "$0")
-samtools="/pkg/biology/SAMtools/samtools_1.2/bin/samtools"
-tabix="/pkg/biology/SAMtools/samtools_1.2/htslib-1.2.1/tabix"
-bcftools="/pkg/biology/BCFtools/bcftools_1.3/bcftools"
-vcfutils="/pkg/biology/BCFtools/bcftools_1.3/vcfutils.pl"
-
-$samtoolsBin view -bS ${inputfolder}/${sample}.sam -o ${outputfolder}/${sample}.bam
-
-$samtoolsBin sort \
-    ${outputfolder}/${sample}.bam \
-    ${outputfolder}/${sample}.sort
-
-$samtoolsBin mpileup \
-    -q $mpileup_minMapQ \
-    -Q $mpileup_minBaseQ \
-    -vf $reference_fa \
-    ${outputfolder}/${sample}.sort.bam \
-    -o ${outputfolder}/${sample}.vcf.bgzf
-
-$tabix ${outputfolder}/${sample}.vcf.bgzf
-
-
-$bcftools call -c ${outputfolder}/${sample}.vcf.bgzf |  $vcfutils vcf2fq > ${outputfolder}/${sample}.SNV.fastq
-
-$BASEDIR/fastq_to_fasta.pl \
-    $sample \
-    ${outputfolder}/${sample}.SNV.fastq \
-    ${outputfolder}/${sample}.SNV.fasta \
-    $jobid
-
-
-
 ****  end  ***/
 $dirBin=dirname(__FILE__);
 include($dirBin."/config.php");
+chdir($dirBin);
 if (!isset($argv[1])){
  echo "請輸入sra ID\n"; exit();
 }elseif (!isset($argv[2])){
@@ -65,7 +26,7 @@ if (!isset($argv[1])){
  $SNV_fastqFile=$outputfolder."/".$ID.".SNV.fastq";
  $SNV_fastaFile=$outputfolder."/".$ID.".SNV.fasta";
 
- //輸出sort file
+ //輸出bam file
  $inputFileArr=array($samFile); $outputFileArr=array($bamFile); $finalOutputFileArr=$outputFileArr;
  $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);   
  if ($error==0){

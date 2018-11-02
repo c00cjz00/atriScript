@@ -4,7 +4,7 @@ php 001-dataDownload.php $ID $outputfolder
 ****  end  ***/
 $dirBin=dirname(__FILE__);
 include($dirBin."/config.php");
-
+chdir($dirBin);
 if (!isset($argv[1])){
  echo "請輸入SRR/SRP/SRX ID\n"; exit();
 }elseif (!isset($argv[2])){

@@ -4,6 +4,7 @@ php 004-alignment.php $ID $outputfolder $referenceFile
 ****  end  ***/
 $dirBin=dirname(__FILE__);
 include($dirBin."/config.php");
+chdir($dirBin);
 if (!isset($argv[1])){
  echo "請輸入sra ID\n"; exit();
 }elseif (!isset($argv[2])){
