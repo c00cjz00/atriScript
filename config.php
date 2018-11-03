@@ -8,6 +8,7 @@ $ip4SSH=$ip4SSHArr[$rand_keys];
 
 
 /***   執行檔案位置   ***/
+$dirBin=dirname(__FILE__);
 $phpBin="/pkg/biology/php/php";
 $ascpDir="/pkg/biology/Aspera/Aspera_v3.7.7/cli";
 $sraToolkitDir="/pkg/biology/SRA_Toolkit/SRAToolkit_v2.9.0";
@@ -17,7 +18,6 @@ $samtoolsBin="/pkg/biology/SAMtools/SAMtools_v1.9/bin/samtools";
 $tabixBin="/pkg/biology/SAMtools/build/samtools-1.2/htslib-1.2/tabix";
 $bcftoolsBin="/pkg/biology/BCFtools/BCFtools_v1.8/bin/bcftools";
 $vcfutilsBin="/pkg/biology/BCFtools/BCFtools_v1.8/bin/vcfutils.pl";
-
 /***   資料檢查功能   ***/
 function processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr){
  $message1=fileCheck($inputFileArr);
