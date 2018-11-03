@@ -26,12 +26,20 @@ if (!isset($argv[1])){
 }
 $sraFile=$outputfolder."/".$ID.".sra";
 //process check
-$inputFileArr=array(); $outputFileArr=array($sraFile); $finalOutputFileArr=$outputFileArr;
-$error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
-if ($error==0){
- $cmd=$ascpDir."/bin/ascp -i ".$ascpDir."/etc/asperaweb_id_dsa.openssh -k 1 -T -l1G anonftp@ftp.ncbi.nlm.nih.gov:/sra/sra-instant/".$remotefolder."/sra/SRR/".$ID_folder."/".$ID."/".$ID.".sra ".$outputfolder;
- echo "執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
- $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
+for($i=0;$i<10;$i++){
+ if (!is_file($sraFile) || (filesize($sraFile)<1000000)){
+  if (is_file($sraFile)) unlink($sraFile);
+  if (is_file($sraFile.".aspx"))  unlink($sraFile.".aspx"); 
+  $inputFileArr=array(); $outputFileArr=array($sraFile); $finalOutputFileArr=$outputFileArr;
+  $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
+  if ($error==0){
+   $cmd=$ascpDir."/bin/ascp -i ".$ascpDir."/etc/asperaweb_id_dsa.openssh -k 1 -T -l1G anonftp@ftp.ncbi.nlm.nih.gov:/sra/sra-instant/".$remotefolder."/sra/SRR/".$ID_folder."/".$ID."/".$ID.".sra ".$outputfolder;
+   echo "執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+   $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
+  }
+ }
+ if (is_file($sraFile) && (filesize($sraFile)>1000000)) break;
 }
+
 
 ?>
