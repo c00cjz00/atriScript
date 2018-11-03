@@ -1,10 +1,4 @@
 <?php
-/***   個人設定檔案   ***/
-$email="summerhill001@gmail.com";
-$projectID="MST107119";
-$cpuCore="select=1:ncpus=2";
-$queue="cf40";
-
 /***   檔案下載伺服器   ***/
 $ip4SSHArr=array("172.16.20.21","172.16.20.22","172.16.20.23","172.16.20.24");
 $ip4SSHArr=array("clogin1","clogin2","clogin3","clogin4","glogin1");
@@ -52,4 +46,39 @@ function fileCheck($fileArr){
   $file=trim($fileArr[$i]); if (!is_file($file)) { $message.=$file."\n"; }	  
  } 
  return $message;
+}
+
+/*** PBS ***/
+function PBS($jobID,$cmd,$messageOutput,$messageError){
+ /***   個人設定檔案   ***/
+ $dirBin=dirname(__FILE__);
+ include($dirBin."/myConfig.php");	
+ $pbsScript="
+#!/bin/bash 
+# -> 寄信
+#PBS -M $email
+# -> b: job開始執行時發送E-mail, e: job 結束時發送E-mail
+#PBS -m e  
+# -> 計畫名稱
+#PBS -P $projectID
+# -> 計畫群組 
+#PBS -W group_list=$group_list
+# -> 計算名稱
+#PBS -N $jobID
+# -> 計算結點
+#PBS -l $cpuCore
+# -> 計算queue
+#PBS -q $queue
+# -> 確保工作在單一節點執行
+#PBS -l place=pack
+# -> 輸出檔名稱
+#PBS -o $messageOutput
+# -> 錯誤紀錄檔
+#PBS -e $messageError 
+# -> 執行指令
+$cmd
+";
+ $prgfile_hx = tempnam("/tmp", "pbs_"); $fp = fopen($prgfile_hx, "w"); fwrite($fp, $pbsScript); fclose($fp);
+ //passthru("qsub ".$prgfile_hx);
+ return $prgfile_hx;
 }
