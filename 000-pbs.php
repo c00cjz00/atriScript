@@ -20,8 +20,15 @@ if (!isset($argv[1])){
  $cmd=trim($argv[3]); 
  $messageOutput=$outputfolder."/0.output"; 
  $messageError=$outputfolder."/0.error"; 
+ $jobID_message=$outputfolder."/".$jobID.".message"; 
+
+ if (substr($dataUploadSite,0,4)=="http"){	
+  $echo="echo ".$time." > ".$jobID_message; 
+  $cmdCurl="/usr/bin/curl -F 'fileToUpload=@".$jobID_message."' ".$dataUploadSite;
+  $cmd=$echo."\n".$cmd."\n".$cmdCurl."\n"; 	
+ }
  $prgfile_hx = PBS($jobID,$cmd,$messageOutput,$messageError);
  echo $prgfile_hx."\n"; 
  passthru("qsub ".$prgfile_hx); 
- unlink($prgfile_hx);
+ //unlink($prgfile_hx);
 }

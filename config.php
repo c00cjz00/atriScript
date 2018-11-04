@@ -1,4 +1,8 @@
 <?php
+/***   個人設定檔案   ***/
+$dirBin=dirname(__FILE__);
+include($dirBin."/myConfig.php");
+
 /***   時間   ***/
 date_default_timezone_set("Asia/Taipei");
 $time=date("YmdHis");
@@ -13,7 +17,6 @@ $ip4SSH=$ip4SSHArr[$rand_keys];
 
 
 /***   執行檔案位置   ***/
-$dirBin=dirname(__FILE__);
 $phpBin="/pkg/biology/php/php";
 $ascpDir="/pkg/biology/Aspera/Aspera_v3.7.7/cli";
 $sraToolkitDir="/pkg/biology/SRA_Toolkit/SRAToolkit_v2.9.0";
@@ -87,7 +90,9 @@ function PBS($jobID,$cmd,$messageOutput,$messageError){
 # -> 執行指令
 $cmd
 ";
+
  $prgfile_hx = tempnam("/tmp", "pbs_"); $fp = fopen($prgfile_hx, "w"); fwrite($fp, $pbsScript); fclose($fp);
  //passthru("qsub ".$prgfile_hx);
  return $prgfile_hx;
 }
+
