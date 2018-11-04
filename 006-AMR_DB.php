@@ -1,6 +1,6 @@
 <?php
 /***  cmd  ****
-php 006-AMR_DB.php $ID $outputfolder $cardIndexFile
+php 006-AMR_DB.php $ID $outputfolder 
 
 ****  end  ***/
 $dirBin=dirname(__FILE__);
@@ -14,7 +14,6 @@ if (!isset($argv[1])){
  //echo "請輸入cardFolder\n"; exit();
 }else{ 
  $ID=trim($argv[1]); $outputfolder=trim($argv[2]); 
- $cardIndexFile=$dirBin."/cardData/nucleotide_fasta_protein_homolog_model.fasta"; 
  $cardIndexFile_sam=$outputfolder."/cardIndex.sma";
  $cardIndexFile_sai=$outputfolder."/cardIndex.smi";
  $pariFile1=$outputfolder."/".$ID."_1.trim_paired.fq";

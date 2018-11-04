@@ -18,6 +18,10 @@ $samtoolsBin="/pkg/biology/SAMtools/SAMtools_v1.9/bin/samtools";
 $tabixBin="/pkg/biology/SAMtools/build/samtools-1.2/htslib-1.2/tabix";
 $bcftoolsBin="/pkg/biology/BCFtools/BCFtools_v1.8/bin/bcftools";
 $vcfutilsBin="/pkg/biology/BCFtools/BCFtools_v1.8/bin/vcfutils.pl";
+
+/***   card 檔案位置   ***/
+$cardIndexFile=$dirBin."/cardData/nucleotide_fasta_protein_homolog_model.fasta"; 
+
 /***   資料檢查功能   ***/
 function processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr){
  $message1=fileCheck($inputFileArr);

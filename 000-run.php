@@ -25,31 +25,39 @@ if (!isset($argv[1])){
  $trailing=trim($argv[4]); $minlen=trim($argv[5]); $mpileup_minMapQ=trim($argv[6]);  $mpileup_minBaseQ=trim($argv[7]); 
  $sraFile=$outputfolder."/".$ID.".sra";
  $SNV_fastaFile=$outputfolder."/".$ID.".SNV.fasta";
+ $SNV_fastaFile=$outputfolder."/".$ID.".SNV.fasta";
+ $cardIndexFile_alignment_amr=$outputfolder."/cardAlignmen.amr";
  
  //最終輸出SNV_fastaFile
- $inputFileArr=array(); $outputFileArr=array($SNV_fastaFile); $finalOutputFileArr=$outputFileArr;
+ $inputFileArr=array(); $outputFileArr=array($SNV_fastaFile,$cardIndexFile_alignment_amr); $finalOutputFileArr=$outputFileArr;
  $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);   
  if ($error==0){
   if (!is_dir($outputfolder)) passthru("mkdir -p ".$outputfolder); 
   $referenceFile=$outputfolder."/reference.fna";
-  $cmd="cp ".$referenceFile_tmp." ".$referenceFile;  
-  echo "1.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);  
+  if (!is_file($referenceFile)) {
+   $cmd="cp ".$referenceFile_tmp." ".$referenceFile;  
+   echo "0.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);  
+  }
   $cmd="ssh ".$ip4SSH." ".$phpBin." ".$dirBin."/001-dataDownload.php $ID $outputfolder";   
-  echo "2.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+  echo "1.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
   $cmd=$phpBin." ".$dirBin."/002-dumpSRA.php $sraFile $outputfolder";
-  echo "3.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1); 
+  echo "2.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1); 
   if (isset($argv[8]) && isset($argv[9]) && is_file($argv[8]) && is_file($argv[9])){  
    $fastqFile1=trim($argv[8]); $fastqFile2=trim($argv[9]);
    $cmd=$phpBin." ".$dirBin."/003-trimFromFile.php $ID $outputfolder $trailing $minlen $fastqFile1 $fastqFile2";
   }else{  
    $cmd=$phpBin." ".$dirBin."/003-trim.php $ID $outputfolder $trailing $minlen";
   }
-  echo "4.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+  echo "3.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
   $cmd=$phpBin." ".$dirBin."/004-alignment.php $ID $outputfolder $referenceFile";
-  echo "5.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+  echo "4.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
   $cmd=$phpBin." ".$dirBin."/005-variant_calling.php $ID $outputfolder $referenceFile $mpileup_minMapQ $mpileup_minBaseQ";
-  echo "6.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+  echo "5.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);
+  $cmd=$phpBin." ".$dirBin."/006-AMR_DB.php $ID $outputfolder";
+  echo "6.執行指令如下\n".$cmd."\n\n"; passthru($cmd); sleep(1);  
+  
   $error=processCheck($inputFileArr,$outputFileArr,$finalOutputFileArr);
+  
  }  
  
  if ($error==1){
