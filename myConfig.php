@@ -15,8 +15,8 @@ $cpuCore="select=1:ncpus=4";
 ### SSH 設定 ###
 $ip="140.110.148.14";
 $user="c00cjz00";
-$otpKey = '6UPOOBOEYLAUZV5PRXM3ARFAI3TH573VZQXJ4R73VI4PFW6JMJZQ====';
-$passwd="ponkar@321";
+$otpKey = ''
+$passwd="";
 $sshpassBin="/usr/bin/sshpass";
 $dataUploadSite="http://140.110.17.247/github/curl/index.php";
 
