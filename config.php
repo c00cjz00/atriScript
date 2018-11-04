@@ -1,4 +1,9 @@
 <?php
+/***   時間   ***/
+date_default_timezone_set("Asia/Taipei");
+$time=date("YmdHis");
+
+
 /***   檔案下載伺服器   ***/
 $ip4SSHArr=array("172.16.20.21","172.16.20.22","172.16.20.23","172.16.20.24");
 $ip4SSHArr=array("clogin1","clogin2","clogin3","clogin4","glogin1");
